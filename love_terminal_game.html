@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Love Terminal</title>
+  <style>
+    body {
+      background-color: black;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+    }
+    #terminal {
+      white-space: pre-wrap;
+      min-height: 90vh;
+    }
+    .input-line {
+      display: inline;
+    }
+    #input {
+      background: none;
+      border: none;
+      color: #00ff00;
+      font: inherit;
+      outline: none;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal">
+    Welcome to Love Terminal v3.0 💖<br>
+    Type a command below to continue...<br>
+  </div>
+  <div class="input-line">
+    > <input type="text" id="input" autofocus />
+  </div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const input = document.getElementById("input");
+
+    const responses = {
+      "run love.exe": "I love you juju",
+      "cat message1.txt": "It's been 3 years na you can't escape me!!",
+      "decrypt secrets": "I can't wait for puhon to come",
+      "sudo kiss": "You owe me a kiss >:(( AMUMUMUMU",
+      "cat always.txt": "Don't forget that I love you and I'll always be here for you",
+      "exit": "You tried to leave... but you’re stuck with me forever 💘 hehe"
+    };
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        const command = input.value.trim();
+        terminal.innerHTML += `\n> ${command}`;
+        if (responses[command]) {
+          terminal.innerHTML += `\n${responses[command]}`;
+        } else {
+          terminal.innerHTML += `\nCommand not found. Try again.`;
+        }
+        terminal.scrollTop = terminal.scrollHeight;
+        input.value = "";
+      }
+    });
+  </script>
+</body>
+</html>
