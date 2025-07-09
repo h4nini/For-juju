@@ -15,7 +15,6 @@
       white-space: pre-wrap;
       min-height: 90vh;
       animation: pulse 2s infinite;
-      animation: pulse 2s infinite;
     }
     .input-line {
       display: inline;
@@ -84,9 +83,13 @@
     > <input type="text" id="input" autofocus />
   </div>
 
+  <!-- Typing sound -->
+  <audio id="typeSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_efc86350ae.mp3" preload="auto"></audio>
+
   <script>
     const terminal = document.getElementById("terminal");
     const input = document.getElementById("input");
+    const typeSound = document.getElementById("typeSound");
 
     const responses = {
       "run love.exe": "I love you juju!! Thank you so much for being with me!!!",
@@ -96,7 +99,7 @@
       "always.txt": "Don't forget that I love you and I'll always be here for you",
       "exit": "You tried to leave... but you’re stuck with me forever 💘 hehe"
     };
-    
+
     function typeResponse(text, callback) {
       let i = 0;
       const line = document.createElement("div");
@@ -105,6 +108,10 @@
       function typeChar() {
         if (i < text.length) {
           line.innerHTML += text.charAt(i);
+          if (!typeSound.paused) {
+            typeSound.currentTime = 0;
+          }
+          typeSound.play();
           i++;
           setTimeout(typeChar, 40);
         } else {
@@ -127,7 +134,7 @@
       }, 4000);
     }
 
-     input.addEventListener("keydown", function (e) {
+    input.addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
         const command = input.value.trim();
         terminal.innerHTML += `\n> ${command}`;
