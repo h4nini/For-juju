@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Anniversary juju <3</title>
+  <title>Happy Anniversary juju</title>
   <style>
     body {
       background-color: black;
@@ -26,6 +26,42 @@
       outline: none;
       width: 80%;
     }
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    .typing {
+      display: inline-block;
+      border-right: 2px solid #00ff00;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 2s steps(30, end), blink .75s step-end infinite;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes pulse {
+      0% { text-shadow: 0 0 5px #00ff00; }
+      50% { text-shadow: 0 0 20px #00ff00; }
+      100% { text-shadow: 0 0 5px #00ff00; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    .popup {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #111;
+      color: #ff69b4;
+      padding: 20px;
+      border: 2px solid #ff69b4;
+      font-size: 24px;
+      z-index: 999;
+      animation: fadeIn 0.5s ease-in-out;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -39,6 +75,7 @@
     - secrets<br>
     - sudo kiss<br>
     - always.txt<br>
+    -amumu<br>
     - exit<br>
   </div>
   <div class="input-line">
@@ -57,17 +94,50 @@
       "always.txt": "Don't forget that I love you and I'll always be here for you",
       "exit": "You tried to leave... but you’re stuck with me forever 💘 hehe"
     };
+    
+    function typeResponse(text, callback) {
+      let i = 0;
+      const line = document.createElement("div");
+      terminal.appendChild(line);
 
-    input.addEventListener("keydown", function (e) {
+      function typeChar() {
+        if (i < text.length) {
+          line.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(typeChar, 40);
+        } else {
+          if (callback) callback();
+        }
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+
+      line.classList.add("fade-in");
+      typeChar();
+    }
+
+    function showPopup(message) {
+      const popup = document.createElement("div");
+      popup.classList.add("popup");
+      popup.innerHTML = message;
+      document.body.appendChild(popup);
+      setTimeout(() => {
+        popup.remove();
+      }, 4000);
+    }
+
+     input.addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
         const command = input.value.trim();
         terminal.innerHTML += `\n> ${command}`;
+
         if (responses[command]) {
-          terminal.innerHTML += `\n${responses[command]}`;
+          typeResponse(responses[command]);
+        } else if (command === "amumu") {
+          showPopup("💥 You triggered the AMUMUMUMU bomb 💋");
         } else {
-          terminal.innerHTML += `\nCommand not found. Try again.`;
+          typeResponse("Command not found. Try again.");
         }
-        terminal.scrollTop = terminal.scrollHeight;
+
         input.value = "";
       }
     });
