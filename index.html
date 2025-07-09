@@ -84,7 +84,7 @@
   </div>
 
   <!-- Typing sound -->
-  <audio id="typeSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_efc86350ae.mp3" preload="auto"></audio>
+  <audio id="typeSound" src="https://cdn.pixabay.com/audio/2023/06/02/audio_6fc34bfb0b.mp3" preload="auto"></audio>
 
   <script>
     const terminal = document.getElementById("terminal");
@@ -108,10 +108,11 @@
       function typeChar() {
         if (i < text.length) {
           line.innerHTML += text.charAt(i);
-          if (!typeSound.paused) {
-            typeSound.currentTime = 0;
-          }
-          typeSound.play();
+          // Clone sound to allow rapid playback
+          const click = typeSound.cloneNode();
+          click.volume = 0.4;
+          click.play();
+
           i++;
           setTimeout(typeChar, 40);
         } else {
